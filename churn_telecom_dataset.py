@@ -16,6 +16,10 @@ import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 
+from sklearn.model_selection import KFold
+from sklearn.svm import SVR
+
+
 df = pd.read_csv("Telecommunication_Data.csv")
 # print(df.loc[:][df['churn'] == 1]) # print the tuples whose churn column is True
 # print(df.loc[:][df['churn'] == 0]) # print the tuples whose churn column is False
@@ -47,8 +51,7 @@ y = df["churn"].values
 x = df.drop(labels = ["churn"],axis = 1) # drop churn column from dataset
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(x,y,test_size=0.2 , random_state=10) # splitting data by 20/80 division
-
+# X_train, X_test, y_train, y_test = train_test_split(x,y,test_size=0.2 , random_state=10) # splitting data by 20/80 division
 
 # print(X_train.shape , X_test.shape  , y_train.shape , y_test.shape)
 
@@ -62,13 +65,8 @@ def bar_chart(feature , df):
   df.plot(kind = 'bar' , figsize = (30,20),map=plt.cm.Reds , annot=True)
   plt.show()
 
-# bar_chart('international plan' , df)
-# print(df.loc[df['international plan'] == 0].count())
-# print(df['total day charge'].min())
-
 def matrix_cor():
     correlation_matrix = df.corr()
-    # # print(correlation_matrix)
     # # annot = True to print the values inside the square
     plt.figure(figsize=(40,30))
     sns.set(font_scale=3)
@@ -80,7 +78,6 @@ cor_matrix = df.corr()
 cor_target = abs(cor_matrix['churn'])
 relevant_figures = cor_target[cor_target > 0.2]
 print(relevant_figures)
-# print(df[['international plan','total day minutes']].corr())
 print(df[['total day minutes','customer service calls']].corr())
 
 # from sklearn.linear_model import LogisticRegression
@@ -91,8 +88,16 @@ print(df[['total day minutes','customer service calls']].corr())
 # # print(score)
 
 grd = GradientBoostingClassifier()
-grd.fit(X_train,y_train)
-y_predict = grd.predict(X_test)
-score_gradient = grd.score(X_test,y_test)
-print(score_gradient)
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler(feature_range=(0, 1))
 
+x = scaler.fit_transform(x)
+scores = []
+best_svr = SVR(kernel='rbf')
+cv = KFold(n_splits=10, random_state=42, shuffle=False) # splitting data to 10 different test and train dataset using Kfold.
+for train_index, test_index in cv.split(x):
+    X_train, X_test, y_train, y_test = x[train_index], x[test_index], y[train_index], y[test_index]
+    grd.fit(X_train,y_train)
+    scores.append(grd.score(X_test,y_test))
+
+print(np.mean(scores))
