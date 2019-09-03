@@ -36,12 +36,7 @@ df = df.drop(labels = ["total eve charge"] , axis = 1)
 df = df.drop(labels = ["total day charge"] , axis = 1)
 df = df.drop(labels = ["total night charge"] , axis = 1)
 df = df.drop(labels = ["total intl charge"] , axis = 1)
-df = df.drop(labels = ["number vmail messages"] , axis = 1)
 df = df.drop(labels = ["account length"] , axis = 1)
-df = df.drop(labels = ["total intl calls"] , axis = 1)
-df = df.drop(labels = ["total night calls"] , axis = 1)
-df = df.drop(labels = ["total eve calls"] , axis = 1)
-df = df.drop(labels = ["international plan"] , axis = 1)
 
 # x = df.iloc[:,:20] # extract whole data except last column
 # y = df.iloc[:,20] # extract whole data for last column as a target
@@ -80,12 +75,6 @@ relevant_figures = cor_target[cor_target > 0.2]
 print(relevant_figures)
 print(df[['total day minutes','customer service calls']].corr())
 
-# from sklearn.linear_model import LogisticRegression
-# clf = LogisticRegression()
-# clf.fit(X_train,y_train) # fit logisticregression modelling to our train sets
-# clf.predict(X_test)
-# score = clf.score(X_test,y_test) # i`ll show how accurate is our prediction
-# # print(score)
 
 grd = GradientBoostingClassifier()
 from sklearn.preprocessing import MinMaxScaler
