@@ -60,17 +60,8 @@ def scatter_plot(df, column1, column2):
 # -------------------------------
 train = drop_columns(train, 'Name')
 test = drop_columns(test, 'Name')
-# train = drop_columns(train, 'Age')
-# test = drop_columns(test, 'Age')
-# train = drop_columns(train, 'Pclass')
-# test = drop_columns(test, 'Pclass')
-
-# train = drop_columns(train , 'Sex')
-# test = drop_columns(test , 'Sex')
 train = drop_columns(train, 'Ticket')
 test = drop_columns(test, 'Ticket')
-# train = drop_columns(train , 'Fare')
-# test = drop_columns(test , 'Fare')
 train = drop_columns(train, 'Cabin')
 test = drop_columns(test, 'Cabin')
 train = drop_columns(train, 'SibSp')
@@ -129,15 +120,6 @@ test.loc[(train.Age > 60), 'Age'] = 4
 # test.loc[(train.Fare > 80), 'Fare'] = 4
 
 
-# print(train['Fare'].describe())
-
-# bar_chart('Age')
-# plt.scatter(train['Sex'] , train['Age'])
-# plt.title("plot")
-# plt.xlabel("sex")
-# plt.ylabel("Age")
-# plt.show()
-
 # exit(0)
 #                           MODELLING
 # ------------------------------------------------------
@@ -145,13 +127,7 @@ from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 # import xgboost as xgb
-# grd = GradientBoostingClassifier()
-# grd = LogisticRegression()
-# grd = KNeighborsClassifier(n_neighbors=7)
-# grd = xgb.XGBClassifier(objective="binary:logistic", random_state=42)
-grd = RandomForestClassifier(n_estimators=700)
-# grd = DecisionTreeClassifier()
-# grd = LinearSVC()
+grd = GradientBoostingClassifier()
 x = train.drop(labels='Survived', axis=1)
 y = train.loc[:, 'Survived']
 
@@ -162,8 +138,6 @@ score = grd.score(X_test, y_test)
 
 # matrix_cor(train)
 
-
-# print(train.loc[:,'Age'])
 
 print(score)
 
