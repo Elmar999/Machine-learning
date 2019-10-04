@@ -90,7 +90,8 @@ dataset['BsmtOvrBath'] = dataset['BsmtHalfBath'] + dataset['BsmtFullBath']
 dataset['TotalFlrSf'] = dataset['1stFlrSF'] + dataset['2ndFlrSF']
 dataset['TotalBath'] = dataset['HalfBath'] + dataset['FullBath']
 
-dropped_cols = ['BsmtHalfBath' , 'BsmtFullBath' , '1stFlrSF' ,'2ndFlrSF' , 'HalfBath' , 'FullBath']
+dropped_cols = ['BsmtHalfBath' , 'BsmtFullBath' , '1stFlrSF' ,'2ndFlrSF' , 'HalfBath' , 'FullBath' , 'MSSubClass']
+
 
 for i in dropped_cols:
     dataset = dataset.drop(labels = i , axis = 1)
@@ -99,6 +100,7 @@ dataset = dataset.drop(labels='GarageArea' , axis = 1)
 #dataset = dataset.drop(labels = 'TotRmsAbvGrd' , axis = 1)
 
 train_columns = list(dataset)
+
 
 #print(dataset['TotalBath'].corr(dataset['BsmtOvrBath']))
 
@@ -124,8 +126,11 @@ test = test.drop(labels = 'GrLivArea' , axis = 1)
 train = train.drop(labels = 'TotalBath' , axis = 1)
 test = test.drop(labels = 'TotalBath' , axis = 1)
 
+for i in ['MSZoning' , 'Street' , 'Alley']:
+	train = train.drop(labels = i , axis = 1)
+	test = test.drop(labels = i , axis = 1)
 
-print(train.info())
+#print(train.info())
 #test = dataset.drop(labels= 'SalePrice' , axis =1)
 test = test.drop(labels= 'SalePrice' , axis =1)
 	
