@@ -85,22 +85,22 @@ for i in missing_cols:
 #   FEATURE ENGINEERING
 # print(dataset['BsmtHalfBath'].corr(dataset['SalePrice']))
 # print(dataset['BsmtFullBath'].corr(dataset['SalePrice']))
-'''
+
 dataset['BsmtOvrBath'] = dataset['BsmtHalfBath'] + dataset['BsmtFullBath']
 dataset['TotalFlrSf'] = dataset['1stFlrSF'] + dataset['2ndFlrSF']
 dataset['TotalBath'] = dataset['HalfBath'] + dataset['FullBath']
-'''
+
 dropped_cols = ['BsmtHalfBath' , 'BsmtFullBath' , '1stFlrSF' ,'2ndFlrSF' , 'HalfBath' , 'FullBath']
 
 for i in dropped_cols:
     dataset = dataset.drop(labels = i , axis = 1)
 
-#dataset = dataset.drop(labels='GarageArea' , axis = 1)
+dataset = dataset.drop(labels='GarageArea' , axis = 1)
 #dataset = dataset.drop(labels = 'TotRmsAbvGrd' , axis = 1)
 
 train_columns = list(dataset)
 
-# print(dataset['TotalBath'].corr(dataset['BsmtOvrBath']))
+#print(dataset['TotalBath'].corr(dataset['BsmtOvrBath']))
 
 #print(dataset.columns)
 
@@ -119,10 +119,10 @@ for i in categorical_cols:
 train = dataset.iloc[:1460].copy()
 test = dataset.iloc[1460:]
 
-#train = train.drop(labels = 'GrLivArea' , axis = 1)
-#test = test.drop(labels = 'GrLivArea' , axis = 1)
-#train = train.drop(labels = 'TotalBath' , axis = 1)
-#test = test.drop(labels = 'TotalBath' , axis = 1)
+train = train.drop(labels = 'GrLivArea' , axis = 1)
+test = test.drop(labels = 'GrLivArea' , axis = 1)
+train = train.drop(labels = 'TotalBath' , axis = 1)
+test = test.drop(labels = 'TotalBath' , axis = 1)
 
 
 print(train.info())
@@ -144,9 +144,11 @@ from sklearn.metrics import mean_squared_error, r2_score
 rfr.fit(x_train , y_train)
 rfr.score(x_test , y_test)
 prediction = rfr.predict(x_test)
-print(rfr.score(x_test , y_test))
 
+from sklearn.metrics import mean_squared_error
+from math import sqrt
 
+rms = sqrt(mean_squared_error(y_test, prediction))
 r2_score(prediction, y_test)
 
 prediction = rfr.predict(test)
